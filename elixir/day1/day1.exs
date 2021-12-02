@@ -1,4 +1,11 @@
 defmodule Day1 do
+  def read_input(file_name) do
+    File.open!(file_name)
+      |> IO.read(:all)
+      |> String.split("\n")
+      |> Enum.map(&String.to_integer/1)
+  end
+
   def is_increased(_, nil), do: 0
 
   def is_increased(e, last) do
@@ -9,13 +16,9 @@ defmodule Day1 do
     end
   end
 
-  def task1(file_name) do
+  def task1(input) do
     result =
-      File.open!(file_name)
-      |> IO.read(:all)
-      |> String.split("\n")
-      |> Enum.map(&String.to_integer/1)
-      |> Enum.reduce(%{last: nil, count: 0}, fn e, acc ->
+      Enum.reduce(input, %{last: nil, count: 0}, fn e, acc ->
         count = is_increased(e, acc.last)
         %{last: e, count: acc.count + count}
       end)
@@ -23,12 +26,8 @@ defmodule Day1 do
     result.count
   end
 
-  def task2(file_name) do
-    result =
-      File.open!(file_name)
-      |> IO.read(:all)
-      |> String.split("\n")
-      |> Enum.map(&String.to_integer/1)
+  def task2(input) do
+    result = input
       |> Enum.chunk_every(3, 1)
       |> Enum.filter(fn e -> length(e) == 3 end)
       |> Enum.map(fn [a, b, c] -> a + b + c end)
@@ -43,5 +42,7 @@ end
 
 [file_name] = System.argv()
 
-IO.puts("Task 1: " <> Integer.to_string(Day1.task1(file_name)))
-IO.puts("Task 2: " <> Integer.to_string(Day1.task2(file_name)))
+input = Day1.read_input(file_name)
+
+IO.puts("Task 1: " <> Integer.to_string(Day1.task1(input)))
+IO.puts("Task 2: " <> Integer.to_string(Day1.task2(input)))
