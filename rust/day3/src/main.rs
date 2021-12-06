@@ -52,7 +52,7 @@ fn calculate_gamma_rate(frequency: &Vec<usize>, half_length: usize, bitcount: us
 }
 
 fn calculate_epsilon_rate(gamma_rate: usize, bitcount: usize) -> usize {
-    let invert_mask = (2 << bitcount - 1) - 1;
+    let invert_mask = (1 << bitcount) - 1;
     !gamma_rate & invert_mask
 }
 
